@@ -34,7 +34,6 @@ public class App {
 	{
 		ResourceConfig config = new AppConfig();
 		config.packages("com.ca.example.metricsdaggerexample.resources");
-		config.register(new AppBinder());
 		return config;
 	}
 
