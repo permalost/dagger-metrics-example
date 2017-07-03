@@ -11,22 +11,17 @@ import javax.inject.Singleton;
 
 
 @Module
-public class MetricsModule
+public abstract class MetricsModule
 {
-	private static volatile MetricRegistry METRIC_REGISTRY = null;
 
-	@Provides @Singleton synchronized MetricRegistry provideMetricRegistry() {
-		if (METRIC_REGISTRY != null)
-		{
-			return METRIC_REGISTRY;
-		}
+	@Provides @Singleton static MetricRegistry provideMetricRegistry() {
 
 		// Starting two reporters when initializing the registry
-		METRIC_REGISTRY = new MetricRegistry();
-		JmxReporter.forRegistry(METRIC_REGISTRY).build().start();		
-		ConsoleReporter.forRegistry(METRIC_REGISTRY).build().start(15, TimeUnit.SECONDS);
+		MetricRegistry metricRegistry = new MetricRegistry();
+		JmxReporter.forRegistry(metricRegistry).build().start();		
+		ConsoleReporter.forRegistry(metricRegistry).build().start(15, TimeUnit.SECONDS);
 
-		return METRIC_REGISTRY;
+		return metricRegistry;
 	}
 
 }
